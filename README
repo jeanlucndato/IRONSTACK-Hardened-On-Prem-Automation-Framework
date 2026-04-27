@@ -33,7 +33,7 @@ Design and implement a **fully automated, production-like infrastructure stack**
 All of this — deployed and executed on a **self-hosted homelab environment**.
 
 
-![schema project](docs/schema.png)
+![schema project](/docs/schema.png)
 
 ---
 
