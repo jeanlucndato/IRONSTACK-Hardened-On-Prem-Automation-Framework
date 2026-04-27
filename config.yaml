@@ -1,0 +1,19 @@
+infrastructure_name: "IRONSTACK-HARDENED-STACK"
+
+# Paramètres de l'orchestrateur
+settings:
+  log_level: "INFO"
+  retry_attempts: 3
+
+# Services à surveiller
+services:
+  - name: "postgres_container"  # Défini dans db/docker-compose.yml
+    type: "database"
+    db_config:
+      user: "myuser"
+      password: "mypassword"
+      database: "mydatabase"
+      port: 5432
+  
+  - name: "nginx_ingress"       # Défini dans nginx/
+    type: "proxy"
