@@ -1,254 +1,134 @@
-```markdown
+Markdown
 # ⚙️ IRONSTACK — Hardened On-Prem Automation Framework
 
 > Building reliable, secure, and fully automated infrastructure — where cloud is not an option.
-   
+
 ---
 
-## 🧭 Context
+## 🧭 Context & Purpose
 
 In high-security environments, infrastructure must operate under strict constraints:
+- **No Cloud Dependency** — Isolation from public providers.
+- **Data Sovereignty** — Full control over execution and storage.
+- **Deterministic Deployment** — Every action is logged and validated.
 
-- No dependency on public cloud providers  
-- Full control over data and execution environment  
-- Deterministic deployment processes  
-- Strong emphasis on reliability and observability  
-
-Yet, most modern DevOps practices assume cloud-native ecosystems.
-
-**IRONSTACK** is my answer to this gap.
+**IRONSTACK** is a production-grade on-premise stack with built-in health validation and automated orchestration, designed for restricted environments.
 
 ---
 
-## 🎯 Objective
-
-Design and implement a **fully automated, production-like infrastructure stack**, running entirely on-premise, with:
-
-- Controlled ingress  
-- Persistent data management  
-- Service orchestration  
-- Local CI/CD pipeline  
-- Built-in health validation  
-
-All of this — deployed and executed on a **self-hosted homelab environment**.
-
-
-![schema project](/docs/schema.png)
-
----
+![project schema](/docs/architecture.png)
 
 ## 🧱 System Architecture
 
-```
+```text
+Client  ──► [ Nginx Ingress (Port 8080) ] ──► [ Dockerized Services ] ──► [ PostgreSQL DB ]
+                          ▲                             │
+                          └─────── [ Python Orchestrator ] ─────┘
+                                   (Health & Logic Audit)
+Design Principles
+Isolation: Services run in strictly defined Docker containers.
 
-Client
-↓
-[Nginx Reverse Proxy]
-↓
-[Dockerized Services]
-↓
-[PostgreSQL Database]
+Observability: Real-time logging and connectivity handshakes.
 
-````
+Resilience: Orchestrator-led recovery and validation logic.
 
-### Design Principles
+🧠 The Control Layer: infra_manager.py
+This framework uses a Python-based Infrastructure Orchestrator that acts as the brain of the stack.
 
-- **Isolation** — services run in containers  
-- **Control** — single entry point via reverse proxy  
-- **Persistence** — database with durable storage  
-- **Observability** — logs and health checks at each layer  
-- **Security-first** — minimal attack surface  
+Key Capabilities:
+Docker API Integration: Validates container states (Running/Created/Exited).
 
----
+SQL Handshake: Verifies real database availability beyond just the container status.
 
-## 🔐 Security-Driven Approach
+Structured Logging: Clean, timestamped audit logs for every run.
 
-This project was built with a mindset aligned to **defensive infrastructure design**:
+Error Handling: Graceful failure reporting with actionable insights.
 
-- SSH access restricted to key-based authentication  
-- Minimal OS footprint (hardened Linux environment)  
-- Firewall rules enforced via UFW  
-- Reverse proxy controlling all external traffic  
-- Service health validation before exposure  
-- No external dependencies (fully local execution)  
+🚀 Getting Started (Installation & Deployment)
+Pour garantir la stabilité du système et éviter les conflits de permissions, suivez ces étapes précises.
 
----
+1. Prerequisites
+Linux Host (Ubuntu 24.04+ / Debian)
 
-## 🧠 Core Component — Infrastructure Orchestrator
+Docker & Docker Compose installés.
 
-At the heart of IRONSTACK lies a Python-based orchestration tool:
+Python 3.12+ installé.
 
-### `infra_manager.py`
+2. Permissions Setup (Hardening Step)
+Assurez-vous que votre utilisateur a les droits nécessaires pour interagir avec le socket Docker :
 
-This is not a script — it's a **control layer**.
+Bash
+# Ajouter l'utilisateur actuel au groupe docker
+sudo usermod -aG docker $USER
 
-### Capabilities:
+# Appliquer les changements immédiatement
+newgrp docker
 
-- Parses infrastructure configuration via YAML  
-- Interacts with Docker using `docker-py`  
-- Validates container health status  
-- Performs PostgreSQL availability checks  
-- Implements structured logging  
-- Handles failures gracefully  
+# Récupérer la propriété du dossier du projet
+sudo chown -R $USER:$USER $(pwd)
+3. Environment Isolation (Python Venv)
+L'utilisation d'un environnement virtuel est obligatoire pour isoler les dépendances de l'orchestrateur.
 
-### Execution Example:
+Bash
+# Créer l'environnement virtuel
+python3 -m venv .venv
 
-```bash
-python infra_manager.py --config config.yaml
-````
+# Activer l'environnement
+source .venv/bin/activate
 
-### Philosophy:
+# Installer les dépendances
+pip install -r requirements.txt
+4. Deploy Infrastructure
+Lancez les services définis (PostgreSQL et Nginx) :
 
-> Infrastructure should not be assumed healthy — it must prove it.
+Bash
+# Lancer la base de données
+cd db && docker-compose up -d && cd ..
 
----
+# Lancer l'Ingress Nginx
+cd nginx && docker-compose up -d && cd ..
+🧪 Running the Audit
+Une fois l'infrastructure déployée, lancez l'orchestrateur pour valider l'intégrité de la pile :
 
-## ⚙️ CI/CD — Without the Cloud
+Bash
+# Assurez-vous d'être dans l'environnement virtuel (.venv)
+python3 infra_manager.py
+Résultat attendu :
 
-IRONSTACK includes a **fully local CI/CD pipeline**, powered by a self-hosted runner.
-
-### Workflow:
-
-1. 🔍 Lint Python code (quality gate)
-2. 🐳 Build Docker image
-3. 🚀 Deploy to local infrastructure
-
-### Why it matters:
-
-* No reliance on external runners
-* Full control over execution environment
-* Reproducible deployments
-* Alignment with restricted environments
-
----
-
-## 🧪 Proof of Execution
-
-This project is not theoretical.
-
-It runs on real hardware.
-
-### Demonstrated through:
-
-* ✅ Successful CI/CD pipeline execution
-* ✅ Automated container deployment
-* ✅ Health-validated infrastructure readiness
-* ✅ Persistent database operations
-
-📸 Add here:
-
-* Screenshot of GitHub Actions pipeline (success)
-* Deployment logs
-* Architecture diagram (PNG)
-
----
-
-## 📂 Project Structure
-
-```
+Plaintext
+2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: ✔ [DOCKER] postgres_container est opérationnel.
+2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: ✔ [DB] PostgreSQL accepte les connexions SQL.
+2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: ✔ [DOCKER] nginx_ingress est opérationnel.
+2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: 🚀 RÉSULTAT : Infrastructure validée et prête pour la production.
+📂 Project Structure
+Plaintext
 IRONSTACK/
-│
-├── infra_manager.py        # Orchestration logic
-├── config.yaml             # Infrastructure definition
-├── requirements.txt
-├── Dockerfile
+├── .venv/                  # Isolated Python environment
+├── infra_manager.py        # Core Orchestration Logic
+├── config.yaml             # Infrastructure blueprint
+├── requirements.txt        # docker-py, PyYAML, psycopg2-binary
 │
 ├── nginx/
-│   └── nginx.conf          # Reverse proxy configuration
+│   ├── nginx.conf          # Hardened Proxy Config
+│   └── docker-compose.yml  # Ingress definition (Mapped to 8080)
 │
 ├── db/
-│   └── docker-compose.yml  # PostgreSQL service
-│
-├── .github/
-│   └── workflows/
-│       └── main.yml        # CI/CD pipeline
+│   └── docker-compose.yml  # Persistent PostgreSQL service
 │
 └── docs/
     └── architecture.png    # System diagram
-```
+🛠️ Tech Stack
+Python: Automation & orchestration.
 
----
+Docker: Service containerization.
 
-## 🛠️ Tech Stack
+PostgreSQL: Data persistence.
 
-* Python (Automation & orchestration)
-* Docker (Container runtime)
-* PostgreSQL (Data persistence)
-* Nginx (Traffic control & logging)
-* GitHub Actions — Self-Hosted (CI/CD)
-* Linux (Hardened environment)
+Nginx: Traffic control & logging.
 
----
+Linux: Hardened environment.
 
-## 🚀 Getting Started
+👤 Author
+Jeanluck NDATO Network & Cybersecurity Engineer
 
-### Requirements
-
-* Linux host (Ubuntu/Debian recommended)
-* Docker & Docker Compose
-* Python 3.x
-* SSH configured with keys
-
-### Setup
-
-```bash
-git clone https://github.com/jeanlucndato/IRONSTACK-Hardened-On-Prem-Automation-Framework.git
-cd IRONSTACK-Hardened-On-Prem-Automation-Framework
-```
-
-```bash
-docker-compose up -d
-```
-
-```bash
-python infra_manager.py --config config.yaml
-```
-
----
-
-## 🧩 Key Engineering Decisions
-
-### Why On-Prem?
-
-Because some environments simply cannot trust the cloud.
-
-### Why Python?
-
-For flexibility, readability, and rapid automation.
-
-### Why Self-Hosted CI/CD?
-
-To ensure deployment pipelines remain **within the trust boundary**.
-
----
-
-## 📈 Future Evolution
-
-IRONSTACK is designed as a foundation.
-
-Next steps include:
-
-* Multi-node orchestration
-* Monitoring stack (Prometheus / Grafana)
-* Security scanning (containers & configs)
-* Advanced alerting system
-* Integration with vulnerability management tools
-
----
-
-## 👤 Author
-
-**Jeanluck NDATO**
-Network & Cybersecurity Engineer
-
----
-
-## 🧭 Closing Statement
-
-This project reflects how I approach infrastructure:
-
-> Not as a collection of services — but as a system that must be trusted, validated, and controlled.
-
-IRONSTACK is a practical demonstration of building **reliable, secure, and autonomous infrastructure under real-world constraints**.
-
-```
+"Infrastructure should not be assumed healthy — it must prove it."
