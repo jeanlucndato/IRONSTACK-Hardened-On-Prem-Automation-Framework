@@ -16,7 +16,7 @@ In high-security environments, infrastructure must operate under strict constrai
 
 ---
 
-![project schema](/docs/architecture.png)
+![project schema](docs/architecture.png)
 
 ## 🧱 System Architecture
 

@@ -2,31 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>IRONSTACK | Ingress Dashboard</title>
+    <title>IRONSTACK // Security Dashboard</title>
     <style>
-        body { background: #0f172a; color: #38bdf8; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: #1e293b; border: 1px solid #334155; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5); width: 400px; text-align: center; }
-        h1 { font-size: 1.5rem; margin-bottom: 1rem; letter-spacing: 2px; color: #f8fafc; border-bottom: 2px solid #38bdf8; padding-bottom: 10px; }
-        .status-list { text-align: left; list-style: none; padding: 0; }
-        .status-item { padding: 10px 0; border-bottom: 1px solid #334155; display: flex; justify-content: space-between; }
-        .status-ok { color: #4ade80; font-weight: bold; }
-        .badge { background: #38bdf8; color: #0f172a; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-        .footer { margin-top: 2rem; font-size: 0.7rem; color: #64748b; }
+        :root { --bg: #0d1117; --card: #161b22; --accent: #58a6ff; --success: #3fb950; --border: #30363d; }
+        body { background: var(--bg); color: #c9d1d9; font-family: 'Inter', -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .dashboard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .header { border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.5rem; }
+        h1 { color: var(--accent); font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; margin: 0; }
+        .status-item { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: rgba(0,0,0,0.2); margin-bottom: 0.5rem; border-radius: 6px; border-left: 4px solid var(--success); }
+        .label { font-weight: 600; font-size: 0.9rem; }
+        .badge { background: rgba(63, 185, 80, 0.1); color: var(--success); padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; border: 1px solid var(--success); }
+        .footer { margin-top: 1.5rem; font-size: 0.7rem; color: #8b949e; text-align: center; font-family: monospace; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>IRONSTACK CORE</h1>
-        <div class="badge">ON-PREM INGRESS ACTIVE</div>
-        <ul class="status-list">
-            <li class="status-item"><span>Nginx Ingress</span> <span class="status-ok">✔ ONLINE</span></li>
-            <li class="status-item"><span>Docker Engine</span> <span class="status-ok">✔ ACTIVE</span></li>
-            <li class="status-item"><span>PostgreSQL DB</span> <span class="status-ok">✔ CONNECTED</span></li>
-        </ul>
-        <div class="footer">
-            Location: Goma, DRC | Node: aptserver<br>
-            Protected by IRONSTACK Automation Framework
-        </div>
+    <div class="dashboard">
+        <div class="header"><h1>⚙️ IRONSTACK SYSTEM</h1></div>
+        <div class="status-item"><span class="label">NGINX INGRESS</span><span class="badge">SECURED</span></div>
+        <div class="status-item"><span class="label">POSTGRESQL DB</span><span class="badge">ENCRYPTED</span></div>
+        <div class="status-item"><span class="label">PYTHON AUDIT</span><span class="badge">PASSING</span></div>
+        <div class="footer">LOCATION: ON-PREM // ENCLAVE: APT41-SERVER</div>
     </div>
 </body>
 </html>
