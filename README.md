@@ -71,38 +71,40 @@ sudo chown -R $USER:$USER $(pwd)
 L'utilisation d'un environnement virtuel est obligatoire pour isoler les dépendances de l'orchestrateur.
 
 Bash
-# Créer l'environnement virtuel
+# create the virtual env
 python3 -m venv .venv
 
-# Activer l'environnement
+# active the env
 source .venv/bin/activate
 
-# Installer les dépendances
+# install requirements
 pip install -r requirements.txt
 4. Deploy Infrastructure
 Lancez les services définis (PostgreSQL et Nginx) :
 
 Bash
-# Lancer la base de données
+# lunch DB
 cd db && docker-compose up -d && cd ..
 
-# Lancer l'Ingress Nginx
+# start enginx
 cd nginx && docker-compose up -d && cd ..
 🧪 Running the Audit
 Une fois l'infrastructure déployée, lancez l'orchestrateur pour valider l'intégrité de la pile :
 
 Bash
-# Assurez-vous d'être dans l'environnement virtuel (.venv)
+# Be sure you are in the good env (.venv)
 python3 infra_manager.py
-Résultat attendu :
+outcome :
 
 Plaintext
 2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: ✔ [DOCKER] postgres_container est opérationnel.
 2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: ✔ [DB] PostgreSQL accepte les connexions SQL.
 2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: ✔ [DOCKER] nginx_ingress est opérationnel.
 2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: 🚀 RÉSULTAT : Infrastructure validée et prête pour la production.
-![Python Audit Success](docs/Python3infra.png)
+
+![System Architecture](docs/Python3infra.png)
 *Figure 2: the oucomes.*
+
 
 📂 Project Structure
 Plaintext
@@ -121,6 +123,9 @@ IRONSTACK/
 │
 └── docs/
     └── architecture.png    # System diagram
+
+![System Architecture](docs/hardening.png)
+*Figure 3: the DASHBOARD.*
 🛠️ Tech Stack
 Python: Automation & orchestration.
 
