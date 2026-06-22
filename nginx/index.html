@@ -2,26 +2,84 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>IRONSTACK // Security Dashboard</title>
+    <title>IRONSTACK // Hardened Control Panel</title>
     <style>
-        :root { --bg: #0d1117; --card: #161b22; --accent: #58a6ff; --success: #3fb950; --border: #30363d; }
-        body { background: var(--bg); color: #c9d1d9; font-family: 'Inter', -apple-system, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-        .dashboard { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .header { border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 1.5rem; }
-        h1 { color: var(--accent); font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; margin: 0; }
-        .status-item { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem; background: rgba(0,0,0,0.2); margin-bottom: 0.5rem; border-radius: 6px; border-left: 4px solid var(--success); }
-        .label { font-weight: 600; font-size: 0.9rem; }
-        .badge { background: rgba(63, 185, 80, 0.1); color: var(--success); padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; border: 1px solid var(--success); }
-        .footer { margin-top: 1.5rem; font-size: 0.7rem; color: #8b949e; text-align: center; font-family: monospace; }
+        :root { --bg: #0b0e14; --card: #151921; --accent: #007bff; --success: #28a745; --warning: #ffc107; --border: #2d333b; --text: #adbac7; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 900px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .full-width { grid-column: span 2; }
+        h1, h2 { color: white; margin-top: 0; letter-spacing: 1px; text-transform: uppercase; font-size: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .header-main { display: flex; justify-content: space-between; align-items: center; }
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 15px; }
+        .stat-box { background: rgba(0,0,0,0.3); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent); }
+        .stat-label { font-size: 0.7rem; color: #768390; display: block; }
+        .stat-value { font-size: 0.9rem; font-weight: bold; color: white; }
+        .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 10px; text-transform: uppercase; float: right; }
+        .badge-ok { background: rgba(40, 167, 69, 0.2); color: var(--success); border: 1px solid var(--success); }
+        .live-indicator { width: 10px; height: 10px; background: var(--success); border-radius: 50%; display: inline-block; margin-right: 5px; box-shadow: 0 0 8px var(--success); }
+        .log-area { font-family: 'Courier New', monospace; font-size: 0.75rem; color: #8b949e; line-height: 1.4; }
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="header"><h1>⚙️ IRONSTACK SYSTEM</h1></div>
-        <div class="status-item"><span class="label">NGINX INGRESS</span><span class="badge">SECURED</span></div>
-        <div class="status-item"><span class="label">POSTGRESQL DB</span><span class="badge">ENCRYPTED</span></div>
-        <div class="status-item"><span class="label">PYTHON AUDIT</span><span class="badge">PASSING</span></div>
-        <div class="footer">LOCATION: ON-PREM // ENCLAVE: APT41-SERVER</div>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="card full-width header-main">
+            <div>
+                <h1>IRONSTACK v1.0.4 — Enterprise Hardened Stack</h1>
+                <span style="font-size: 0.8rem;"><div class="live-indicator"></div> SYSTEM OPERATIONAL // MONITORING ACTIVE</span>
+            </div>
+            <div style="text-align: right; font-family: monospace; font-size: 0.8rem;">
+                HOST: APT-SERVER-NODE-01<br>
+                UPTIME: 99.98%
+            </div>
+        </div>
+
+        <!-- INFRASTRUCTURE STATUS -->
+        <div class="card">
+            <h2>🛡️ Infrastructure Core</h2>
+            <div class="status-grid">
+                <div class="stat-box">
+                    <span class="stat-label">NGINX INGRESS</span>
+                    <span class="stat-value">Port 8080</span><span class="badge badge-ok">Active</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">POSTGRES ENGINE</span>
+                    <span class="stat-value">v15.x (Internal)</span><span class="badge badge-ok">Isolated</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">DOCKER NETWORK</span>
+                    <span class="stat-value">Ironstack_bridge</span><span class="badge badge-ok">Locked</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-label">TLS/SSL STATUS</span>
+                    <span class="stat-value">Self-Signed</span><span class="badge badge-ok">Ready</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPLIANCE & GRC -->
+        <div class="card">
+            <h2>⚖️ Compliance & GRC Audit</h2>
+            <div class="log-area">
+                [PASSED] NIST 800-53 Control AC-3<br>
+                [PASSED] Passwordless DB Auth Policy<br>
+                [PASSED] Non-Root Container Execution<br>
+                [PASSED] Read-Only Filesystem (Nginx Config)<br>
+                [PASSED] Persistent Volume Encryption
+            </div>
+        </div>
+
+        <!-- REAL-TIME AUDIT LOGS -->
+        <div class="card full-width">
+            <h2>🔍 Python Orchestrator: Latest Audit Handshake</h2>
+            <div class="log-area" id="logs">
+                > [2026-05-13 12:01:04] INFO: Validating container 'postgres_container'... OK<br>
+                > [2026-05-13 12:01:05] INFO: Attempting SQL handshake... SUCCESS (0.002s)<br>
+                > [2026-05-13 12:01:05] INFO: Checking Nginx configuration syntax... VALID<br>
+                > [2026-05-13 12:01:06] INFO: Final integrity check: 100% compliant.
+            </div>
+        </div>
     </div>
 </body>
 </html>

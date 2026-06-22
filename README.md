@@ -101,7 +101,7 @@ Plaintext
 2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: ✔ [DB] PostgreSQL accepte les connexions SQL.
 2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: ✔ [DOCKER] nginx_ingress est opérationnel.
 2026-04-27 14:10:00 [INFO] IRONSTACK_CORE: 🚀 RÉSULTAT : Infrastructure validée et prête pour la production.
-![Resultat attendu](docs/python3infra.png)
+![Python Audit Success](docs/Python3infra.png)
 *Figure 2: the oucomes.*
 
 📂 Project Structure
@@ -131,7 +131,7 @@ PostgreSQL: Data persistence.
 Nginx: Traffic control & logging.
 
 Linux: Hardened environment.
-
+![logs Audit Success](docs/hardening.png)
 👤 Author
 Jeanluck NDATO Network & Cybersecurity Engineer
 
